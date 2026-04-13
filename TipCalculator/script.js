@@ -1,25 +1,43 @@
 "use strict";
 
-const btnCalculate = document.querySelector(".btn-calculate");
-let totalAmount = document.querySelector(".total-amount");
-let inputBill = document.querySelector(".input-bill");
-let inputTip = document.querySelector(".input-tip");
-let bill;
-let tip;
+const billEl = document.querySelector(".input-bill");
+const tipEl = document.querySelector(".input-tip");
+const buttonEl = document.querySelector(".btn-calculate");
+const totalEl = document.querySelector(".total-amount");
 
-btnCalculate.addEventListener("click", calculate);
+const state = {
+  bill: "",
+  tip: "",
+  total: "",
 
-inputBill.addEventListener("input", function (e) {
-  bill = e.target.value;
+  calculate() {
+    this.total =
+      Number(this.bill) + Number(this.bill) * (Number(this.tip) / 100);
+  },
+
+  getTotal() {
+    return this.total;
+  },
+
+  setBill(value) {
+    this.bill = value;
+  },
+
+  setTip(value) {
+    this.tip = value;
+  },
+};
+
+buttonEl.addEventListener("click", () => {
+  state.calculate();
+  totalEl.textContent = state.getTotal();
+  totalEl.classList.remove("hidden");
 });
 
-inputTip.addEventListener("input", function (e) {
-  tip = e.target.value;
+billEl.addEventListener("input", (e) => {
+  state.setBill(e.target.value);
 });
 
-function calculate() {
-  const total = Number(bill) + Number(bill) * (Number(tip) / 100);
-
-  totalAmount.textContent = Math.round(total * 100) / 100;
-  totalAmount.classList.remove("hidden");
-}
+tipEl.addEventListener("input", (e) => {
+  state.setTip(e.target.value);
+});
